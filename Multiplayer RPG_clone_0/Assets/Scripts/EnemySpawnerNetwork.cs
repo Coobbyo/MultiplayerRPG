@@ -5,30 +5,29 @@ using Unity.Netcode;
 
 public class EnemySpawnerNetwork : NetworkBehaviour
 {
-    [SerializeField] private Transform enemyPrefab;
+	[SerializeField] private Transform enemyPrefab;
 	private Transform enemyTransform;
 
-    [SerializeField] private int enemyCap = 1;
-    private int numEnemies = 0;
+	[SerializeField] private int enemyCap = 10;
+	private int numEnemies = 0;
 
-    private float spawnTimer = 0.5f;
-    
+	private float spawnTimer = 1f;
+	
 
-    private void Update()
-    {
-        if(!IsServer) return;
-        if(numEnemies >= enemyCap) return;
-        if(spawnTimer > 0)
-        {
-            spawnTimer -= Time.deltaTime;
-            return;
-        }
+	private void Update()
+	{
+		if(!IsServer) return;
+		if(numEnemies >= enemyCap) return;
+		if(spawnTimer > 0)
+		{
+			spawnTimer -= Time.deltaTime;
+			return;
+		}
 
-        Debug.Log("Spawning Enemy");
-        enemyTransform = Instantiate(enemyPrefab, transform);
+		enemyTransform = Instantiate(enemyPrefab, transform);
 		enemyTransform.GetComponent<NetworkObject>().Spawn(true);
-        numEnemies++;
+		numEnemies++;
 
-        spawnTimer = 0.5f + Random.Range(0.1f, 1f);
-    }
+		spawnTimer += 5f + Random.Range(0.1f, 5f);
+	}
 }
