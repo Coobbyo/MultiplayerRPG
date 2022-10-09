@@ -6,6 +6,14 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour
 {
+	private void Start() //Is this leagal?
+	{
+		if(IsClient && IsOwner)
+		{
+			PlayerCameraFollow.Instance.Attach(transform);
+		}
+	}
+
     private void Update()
     {
         if(!IsOwner) return;
