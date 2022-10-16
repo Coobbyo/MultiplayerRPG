@@ -20,16 +20,17 @@ public class PlayerCameraFollow : MonoBehaviour
         }
     }
 
-    private CinemachineVirtualCamera cinemachineVitualCamera;
+    private CinemachineFreeLook cinemachineFreeLook;
 
     private void Awake()
     {
         mInstance = this;
-        cinemachineVitualCamera = GetComponent<CinemachineVirtualCamera>();
+        cinemachineFreeLook = GetComponent<CinemachineFreeLook>();
     }
 
-    public void Attach(Transform transform)
+    public void Attach(Transform followTransform, Transform LookAtTransform)
     {
-        cinemachineVitualCamera.Follow = transform;
+        cinemachineFreeLook.Follow = followTransform;
+        cinemachineFreeLook.LookAt = LookAtTransform;
     }
 }
