@@ -56,6 +56,8 @@ public class ChatBubble : MonoBehaviour
         backgroundSpriteRenderer.transform.localPosition = new Vector3(backgroundSpriteRenderer.size.x / 2f, 0f) + offset;
 
         iconSpriteRenederer.sprite = GetIconSprite(iconType);
+
+        TextWriter.AddWriter_Static(textMeshPro, text, 0.05f, true, true, () => { });
     }
 
     private Sprite GetIconSprite(IconType iconType)
