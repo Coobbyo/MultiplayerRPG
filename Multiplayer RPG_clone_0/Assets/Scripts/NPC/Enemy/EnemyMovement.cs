@@ -27,7 +27,6 @@ public class EnemyMovement : MonoBehaviour
 			}
 		} else
 		{
-			Debug.Log("Move");
 			float moveSpeed = 3f;
 			moveDir = target - transform.localPosition;
 			transform.localPosition += moveDir.normalized * moveSpeed * Time.deltaTime;

@@ -9,49 +9,48 @@ public class PlayerNetwork : NetworkBehaviour
 	[SerializeField] private Transform camLookAt;
 	[SerializeField] private MeshRenderer baseMesh;
 
-	//private NetworkVariable<Color> randomColor = new NetworkVariable<Color>(Color.white, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+	private NetworkVariable<Color> baseColor = new NetworkVariable<Color>(Color.white);
 
 	public override void OnNetworkSpawn()
 	{
-		Color randomColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 		if(IsOwner)
 		{
-			ChangeColorServerRPC(randomColor);
-
+			ChangeColor();
+			
 			if(IsClient)
 			{
 				if(camLookAt == null) camLookAt = transform;
 				PlayerCameraFollow.Instance.Attach(transform, camLookAt);
 			}
 		}
-
-		ChangeColorClientRPC(randomColor);
-
-		Debug.Log("Last: " + randomColor);
 	}
 
-    private void Update()
-    {
-        if(!IsOwner) return;
-    }
-
-	/*private void GetRandomColor()
+	private void Update()
 	{
-		if(randomColor == Color.white) return;
-		randomColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-	}*/
+		baseMesh.material.color = baseColor.Value; //This should probably be a delegate
+	}
+
+	private void ChangeColor()
+	{
+		if(IsServer)
+		{
+			Color randomColor = GetRandomColor();
+			baseMesh.material.color = randomColor;
+			baseColor.Value = randomColor;
+		} else
+		{
+			ChangeColorServerRPC();
+		}
+	}
+
+	private Color GetRandomColor()
+	{
+		return new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+	}
 
 	[ServerRpc]
-	private void ChangeColorServerRPC(Color color)
+	private void ChangeColorServerRPC()
 	{
-		Debug.Log("Server: " + color);
-		baseMesh.material.color = color;
-	}
-
-	[ClientRpc]
-	private void ChangeColorClientRPC(Color color)
-	{
-		Debug.Log("Client: " + color);
-		baseMesh.material.color = color;
+		baseColor.Value = GetRandomColor();
 	}
 }

@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081c2e33930b4644e908a62bec098381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMesh: {fileID: 7024920381010945412}
   camLookAt: {fileID: 7636143578505519575}
+  baseMesh: {fileID: 7024920381010945412}
 --- !u!114 &6362329898410583213
 MonoBehaviour:
   m_ObjectHideFlags: 0
