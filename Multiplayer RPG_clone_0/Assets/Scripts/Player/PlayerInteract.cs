@@ -10,15 +10,43 @@ public class PlayerInteract : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.E))//TODO: convert this to Input System
 		{
-			Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
-			foreach(Collider collider in colliderArray)
+			IInteractable interactable = GetInteractableObject();
+			if(interactable != null)
 			{
-				if(collider.TryGetComponent(out NPCInteractable nPCInteractable))
+				interactable.Interact(transform);
+			}
+		}
+	}
+
+	public IInteractable GetInteractableObject()
+	{
+		List<IInteractable> interactableList = new List<IInteractable>();
+		Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
+		foreach(Collider collider in colliderArray)
+		{
+			if(collider.TryGetComponent(out IInteractable interactable))
+			{
+				interactableList.Add(interactable);
+			}
+		}
+
+		IInteractable closestInteractable = null;
+		foreach(IInteractable interactable in interactableList)
+		{
+			if(closestInteractable == null)
+			{
+				closestInteractable = interactable;
+			} else
+			{
+				if(Vector3.Distance(transform.position, interactable.GetTransform().position) <
+					Vector3.Distance(transform.position, closestInteractable.GetTransform().position))
 				{
-					nPCInteractable.Interact();
+					closestInteractable = interactable;
 				}
 			}
 		}
+
+		return closestInteractable;
 	}
 	
 }

@@ -30,16 +30,22 @@ public class PlayerNetwork : NetworkBehaviour
 		baseMesh.material.color = baseColor.Value; //This should probably be a delegate
 	}
 
-	private void ChangeColor()
+	public void ChangeColor()
+	{
+		Color randomColor = GetRandomColor();
+		ChangeColor(randomColor);
+
+	}
+
+	public void ChangeColor(Color newColor)
 	{
 		if(IsServer)
 		{
-			Color randomColor = GetRandomColor();
-			baseMesh.material.color = randomColor;
-			baseColor.Value = randomColor;
+			baseMesh.material.color = newColor;
+			baseColor.Value = newColor;
 		} else
 		{
-			ChangeColorServerRPC();
+			ChangeColorServerRPC(newColor);
 		}
 	}
 
@@ -49,8 +55,8 @@ public class PlayerNetwork : NetworkBehaviour
 	}
 
 	[ServerRpc]
-	private void ChangeColorServerRPC()
+	private void ChangeColorServerRPC(Color color)
 	{
-		baseColor.Value = GetRandomColor();
+		baseColor.Value = color;
 	}
 }

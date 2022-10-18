@@ -53,7 +53,7 @@ public class ChatBubble : MonoBehaviour
 		iconSpriteRenederer.sprite = GetIconSprite(iconType);
 		Debug.Log(iconType);
 
-		TextWriter.AddWriter_Static(textMeshPro, text, 0.05f, true, true, () => { });
+		//TextWriter.AddWriter_Static(textMeshPro, text, 0.05f, true, true, () => { });
 	}
 
 	private Sprite GetIconSprite(IconType iconType)
