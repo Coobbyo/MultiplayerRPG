@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : NetworkBehaviour
 {
 	private Vector3 target, moveDir = Vector3.zero;
 	private float moveTimer = 0.25f;
+
+	private void Update()
+	{
+		if(!IsServer) return;
+			Move();
+	}
 
 	public void Move()
 	{

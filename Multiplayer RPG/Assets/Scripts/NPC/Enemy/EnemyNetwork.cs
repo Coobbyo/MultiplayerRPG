@@ -3,15 +3,34 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class EnemyNetwork : NetworkBehaviour
+[RequireComponent(typeof(CharacterStatsNetwork))]
+public class EnemyNetwork : NetworkBehaviour, IInteractable
 {
-	[SerializeField] private EnemyMovement movement;
-
-	void Update()
+	CharacterStatsNetwork stats;
+	
+	private void Start()
 	{
-		if(IsServer)
-		{
-			movement.Move();
-		}
+		stats = GetComponent<CharacterStatsNetwork>();
+		stats.OnHealthReachedZero += Die;
+	}
+
+	private void Die()
+	{
+		Destroy(gameObject, 5f);
+	}
+
+	public void Interact(Transform interactorTransform)
+	{
+		Debug.Log("Fight");
+	}
+
+    public string GetInteractText()
+	{
+		return "Fight Slime";
+	}
+
+    public Transform GetTransform()
+	{
+		return transform;
 	}
 }

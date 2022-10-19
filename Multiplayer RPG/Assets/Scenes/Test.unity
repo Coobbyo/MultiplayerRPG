@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   containergameObject: {fileID: 1631486028}
   playerInteract: {fileID: 0}
-  interactTextMeshProUGUI: {fileID: 0}
+  interactTextMeshProUGUI: {fileID: 637060811}
 --- !u!1 &40919614
 GameObject:
   m_ObjectHideFlags: 0

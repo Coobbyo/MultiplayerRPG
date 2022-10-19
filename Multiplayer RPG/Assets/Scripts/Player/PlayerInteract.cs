@@ -6,6 +6,14 @@ public class PlayerInteract : MonoBehaviour
 {
 	[SerializeField] private float interactRange = 2f;
 
+	private PlayerInteractUI interactUI;
+
+	private void Awake()
+	{
+		interactUI = FindObjectOfType<PlayerInteractUI>();
+		interactUI.AttachPlayer(this);
+	}
+
 	private void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.E)) //TODO: convert this to Input System

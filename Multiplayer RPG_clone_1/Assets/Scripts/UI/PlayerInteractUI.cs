@@ -9,7 +9,7 @@ public class PlayerInteractUI : MonoBehaviour
     [SerializeField] private PlayerInteract playerInteract;
     [SerializeField] private TextMeshProUGUI interactTextMeshProUGUI;
 
-    private void update()
+    private void Update()
     {
         if(playerInteract == null) return;
         if(playerInteract.GetInteractableObject() != null)
@@ -30,5 +30,10 @@ public class PlayerInteractUI : MonoBehaviour
     private void Hide()
     {
         containergameObject.SetActive(false);
+    }
+
+    public void AttachPlayer(PlayerInteract player)
+    {
+        playerInteract = player;
     }
 }
