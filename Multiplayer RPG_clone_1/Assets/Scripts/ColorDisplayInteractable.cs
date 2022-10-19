@@ -8,6 +8,7 @@ public class ColorDisplayInteractable : MonoBehaviour, IInteractable
 
     public void Interact(Transform interactTransform)
     {
+        Debug.Log("Display interacting");
         interactTransform.GetComponent<PlayerNetwork>().ChangeColor(displayColor);
     }
 

@@ -8,7 +8,7 @@ public class PlayerInteract : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.E))//TODO: convert this to Input System
+		if(Input.GetKeyDown(KeyCode.E)) //TODO: convert this to Input System
 		{
 			IInteractable interactable = GetInteractableObject();
 			if(interactable != null)
