@@ -8,7 +8,7 @@ public class EnemyNetwork : NetworkBehaviour, IInteractable
 {
 	CharacterStatsNetwork stats;
 	
-	private void Start()
+	public override void OnNetworkSpawn()
 	{
 		stats = GetComponent<CharacterStatsNetwork>();
 		stats.OnHealthReachedZero += Die;

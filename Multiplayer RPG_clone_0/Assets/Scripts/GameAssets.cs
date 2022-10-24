@@ -16,4 +16,5 @@ public class GameAssets : MonoBehaviour
     }
 
     public Transform chatBubblePrefab;
+    public Transform chatBubble3DPrefab;
 }

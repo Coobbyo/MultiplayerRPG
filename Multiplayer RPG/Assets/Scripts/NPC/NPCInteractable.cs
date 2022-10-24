@@ -8,7 +8,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     public void Interact(Transform interactTransform)
     {
-        ChatBubble.Create(transform.transform, new Vector3(-1.25f, 1.7f, 0f), ChatBubble.IconType.Happy, "Hello there!");
+        ChatBubble3D.Create(transform.transform, new Vector3(-1.25f, 1.7f, 0f), ChatBubble3D.IconType.Happy, "Hello there!");
     }
 
     public string GetInteractText()

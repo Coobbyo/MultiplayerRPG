@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatBubblePrefab: {fileID: 3438130563297485287, guid: bca504e2716dc684199d168155dbfd6d, type: 3}
+  chatBubble3DPrefab: {fileID: 3438130563297485287, guid: fc71686a53fcf9f4c92664e98b555be5, type: 3}

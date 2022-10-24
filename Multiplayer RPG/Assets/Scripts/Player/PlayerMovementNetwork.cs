@@ -17,7 +17,7 @@ public class PlayerMovementNetwork : NetworkBehaviour
 	private Transform cam;
 	private CharacterController characterController;
 
-	private void Awake()
+	public override void OnNetworkSpawn()
 	{
 		playerInput = GetComponent<PlayerInput>();
 		cam = Camera.main.transform;

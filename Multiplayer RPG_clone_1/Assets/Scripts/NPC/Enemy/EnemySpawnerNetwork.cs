@@ -17,6 +17,7 @@ public class EnemySpawnerNetwork : NetworkBehaviour
 	private void Update()
 	{
 		if(!IsServer) return;
+
 		if(numEnemies >= enemyCap) return;
 		if(spawnTimer > 0)
 		{
@@ -24,6 +25,7 @@ public class EnemySpawnerNetwork : NetworkBehaviour
 			return;
 		}
 
+		//Debug.Log("IsServer: " + IsServer);
 		enemyTransform = Instantiate(enemyPrefab, transform);
 		InitializeEnemy(enemyTransform);
 		enemyTransform.GetComponent<NetworkObject>().Spawn(true);

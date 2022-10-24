@@ -15,18 +15,18 @@ public class CharacterCombat : MonoBehaviour
 	CharacterStatsNetwork myStats;
 	CharacterStatsNetwork enemyStats;
 
-    private void Start ()
+    private void Start()
 	{
 		myStats = GetComponent<CharacterStatsNetwork>();
 		//HealthUIManager.instance.Create (healthBarPos, myStats);
 	}
 
-    void Update ()
+    void Update()
 	{
 		attackCountdown -= Time.deltaTime;
 	}
 
-    public void Attack (CharacterStatsNetwork enemyStats)
+    public void Attack(CharacterStatsNetwork enemyStats)
 	{
 		if (attackCountdown <= 0f)
 		{

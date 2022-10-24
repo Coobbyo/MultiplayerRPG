@@ -12,7 +12,7 @@ public class ChatBubble : MonoBehaviour
 
 		chatBubbleTransform.GetComponent<ChatBubble>().SetUp(iconType, text);
 
-		Destroy(chatBubbleTransform.gameObject, 4f);
+		Destroy(chatBubbleTransform.gameObject, 5f);
 	}
 
 
@@ -52,7 +52,7 @@ public class ChatBubble : MonoBehaviour
 
 		iconSpriteRenederer.sprite = GetIconSprite(iconType);
 
-		//TextWriter.AddWriter_Static(textMeshPro, text, 0.05f, true, true, () => { });
+		//TextWriter.AddWriter_Static(textMeshPro, text, 0.03f, true, true, () => { });
 	}
 
 	private Sprite GetIconSprite(IconType iconType)
