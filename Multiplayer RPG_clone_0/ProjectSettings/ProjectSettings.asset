@@ -793,11 +793,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 2
-  cloudProjectId: 
+  cloudProjectId: f01d47ad-6649-4fe2-94ce-98ffd71d80e4
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: RPG Test Game
+  organizationId: coobbyo
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

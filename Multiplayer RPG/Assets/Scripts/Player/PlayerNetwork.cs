@@ -6,17 +6,24 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour
 {
+	public PlayerStats stats;
+
 	[SerializeField] private Transform camLookAt;
 	[SerializeField] private MeshRenderer baseMesh;
 
 	private NetworkVariable<Color> baseColor = new NetworkVariable<Color>(Color.white);
 
+	public Vector3 SpawnPoint = Vector3.zero;
+
 	public override void OnNetworkSpawn()
 	{
 		if(IsOwner)
 		{
-			ChangeColor();
-			
+			stats = GetComponent<PlayerStats>();
+			stats.OnHealthReachedZero += RespawnServerRPC;
+
+			//ChangeColor();
+
 			if(IsClient)
 			{
 				if(camLookAt == null) camLookAt = transform;
@@ -58,5 +65,13 @@ public class PlayerNetwork : NetworkBehaviour
 	private void ChangeColorServerRPC(Color color)
 	{
 		baseColor.Value = color;
+	}
+
+	[ServerRpc]
+	private void RespawnServerRPC()
+	{
+		Debug.Log("Player Died");
+		GetComponent<PlayerMovementNetwork>().Teleport(SpawnPoint);
+		stats.HasDied = false;
 	}
 }

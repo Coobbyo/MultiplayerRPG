@@ -1,14 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class ColorDisplayInteractable : MonoBehaviour, IInteractable
+public class ColorDisplay : NetworkBehaviour, IInteractable
 {
     [SerializeField] Color displayColor = Color.white;
+    [SerializeField] MeshRenderer displayMesh;
+
+    public override void OnNetworkSpawn()
+    {
+        if(!IsServer) return;
+
+        displayMesh.material.color = displayColor;
+    }
 
     public void Interact(Transform interactTransform)
     {
-        Debug.Log("Display interacting");
         interactTransform.GetComponent<PlayerNetwork>().ChangeColor(displayColor);
     }
 

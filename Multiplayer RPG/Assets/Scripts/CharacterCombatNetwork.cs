@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterStatsNetwork))]
-public class CharacterCombat : MonoBehaviour
+public class CharacterCombatNetwork : MonoBehaviour
 {
     public float attackRate = 1f;
 	private float attackCountdown = 0f;
 
 	public event System.Action OnAttack;
 
-	public Transform healthBarPos;
+	//public Transform healthBarPos;
 
 	CharacterStatsNetwork myStats;
 	CharacterStatsNetwork enemyStats;
@@ -23,7 +23,8 @@ public class CharacterCombat : MonoBehaviour
 
     void Update()
 	{
-		attackCountdown -= Time.deltaTime;
+		if(attackCountdown > 0)
+			attackCountdown -= Time.deltaTime;
 	}
 
     public void Attack(CharacterStatsNetwork enemyStats)
@@ -35,13 +36,19 @@ public class CharacterCombat : MonoBehaviour
 
 			StartCoroutine(DoDamage(enemyStats,.6f));
 
-			if (OnAttack != null) {
+			if(OnAttack != null)
+			{
 				OnAttack();
 			}
 		}
 	}
 
-    IEnumerator DoDamage(CharacterStatsNetwork stats, float delay)
+	public bool HasDied()
+	{
+		return myStats.HasDied;
+	}
+
+    private IEnumerator DoDamage(CharacterStatsNetwork stats, float delay)
     {
 		yield return new WaitForSeconds (delay);
 

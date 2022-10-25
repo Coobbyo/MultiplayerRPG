@@ -3,22 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-[RequireComponent(typeof(CharacterCombat))]
-public class EnemyMovement : NetworkBehaviour
+[RequireComponent(typeof(CharacterCombatNetwork))]
+public class EnemyMovementNetwork : NetworkBehaviour
 {
+	public Vector3 debugPosition;
+
 	[SerializeField] private float moveSpeed = 3f;
-	[SerializeField] private float followDistance = 5f;
-	[SerializeField] private float stopDistance = 1f;
+	[SerializeField] private float followDistance = 10f;
+	[SerializeField] private float stopDistance = 0.9f;
+	[SerializeField] private float roamingRadius = 10f;
 
 	private Transform target;
 	private Vector3 targetPosition, moveDir = Vector3.zero;
 	private float moveTimer = 0.25f;
 
-	private CharacterCombat combatManager;
+	private CharacterCombatNetwork combatManager;
 
 	public override void OnNetworkSpawn()
 	{
-		combatManager = GetComponent<CharacterCombat>();
+		combatManager = GetComponent<CharacterCombatNetwork>();
+		targetPosition = transform.position + GetNewPosition();
 	}
 
 	private void Update()
@@ -32,10 +36,7 @@ public class EnemyMovement : NetworkBehaviour
 		{
 			Follow();
 			if(Vector3.Distance(target.position, transform.position) > followDistance)
-			{
-				target = null;
-				targetPosition = GetNewPosition();
-			}
+				DropTarget();
 		}
 	}
 
@@ -44,54 +45,65 @@ public class EnemyMovement : NetworkBehaviour
 		target = CheckForPlayers();
 	}
 
-	public void Move()
+	private void Move()
 	{
+		//if(transform.localPosition.magnitude >= roamingRadius)
+			//DropTarget();
+
 		moveDir = targetPosition - transform.position;
-		transform.localPosition += moveDir.normalized * moveSpeed * Time.deltaTime;
+		transform.position += moveDir.normalized * moveSpeed * Time.deltaTime;
+	}
+
+	private void Stop()
+	{
+		moveDir = Vector3.zero;
 	}
 
 	private void Follow()
 	{
 		float distance = Vector3.Distance(target.position, transform.position);
 
-		if(distance <= followDistance && distance >= stopDistance)
+		if(distance <= followDistance)
 		{
-			Debug.Log("Following: " + target.position);
 			targetPosition = target.position;
 			Move();
 			if(distance <= stopDistance)
 			{
-				//combatManager.Attack(Player.instance.playerStats);
-				//FaceTarget();
+				Debug.Log("Try to Attack");
+				if(target.TryGetComponent(out PlayerNetwork player))
+				{
+					Debug.Log("Exterminate");
+					combatManager.Attack(player.stats);
+					FaceTarget();
+				}
 			}
 		}
 	}
 
 	private void Wander()
 	{
-		if(Vector3.Distance(targetPosition, transform.localPosition) < 0.1f)
+		if(Vector3.Distance(targetPosition, transform.position) < 0.1f)
 		{
+			Stop();
 			if(moveTimer >= 0f)
 			{
 				moveTimer -= Time.deltaTime;
 			} else
 			{
-				Vector3 newPosition = GetNewPosition();
+				Vector3 newPosition = transform.position + GetNewPosition();
 				targetPosition = newPosition;
 				moveTimer += 2.5f + Random.Range(0.5f, 10.0f);
 			}
 		} else
 		{
-			moveDir = targetPosition - transform.localPosition;
-			transform.localPosition += moveDir.normalized * moveSpeed * Time.deltaTime;
+			Move();
 		}
 	}
 
 	private Vector3 GetNewPosition()
 	{
-		Vector3 newPosition = Vector3.zero;
-		newPosition.x = Random.Range(-10, 10);
-		newPosition.z = Random.Range(-10, 10);
+		Vector3 newPosition = new Vector3(Random.Range(-1.0f, 1.0f), 0f, Random.Range(-1.0f, 1.0f));
+		newPosition = newPosition * roamingRadius;
 		return newPosition;
 	}
 
@@ -100,6 +112,13 @@ public class EnemyMovement : NetworkBehaviour
 		Vector3 direction = (target.position - transform.position).normalized;
 		Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 		transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+	}
+
+	private void DropTarget()
+	{
+		target = null;
+		targetPosition = transform.parent.position + GetNewPosition();
+		//Debug.Log("Spawner: " + transform.parent.position);
 	}
 
 	private Transform CheckForPlayers()

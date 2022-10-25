@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayColor: {r: 1, g: 1, b: 1, a: 0}
+  displayMesh: {fileID: 6048808064588673129}
 --- !u!65 &6303871277562980409
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -6,22 +6,25 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStatsNetwork))]
 public class EnemyNetwork : NetworkBehaviour, IInteractable
 {
-	CharacterStatsNetwork stats;
+	private CharacterStatsNetwork stats;
+
+	public event System.Action OnDespawn;
 	
 	public override void OnNetworkSpawn()
 	{
-		stats = GetComponent<CharacterStatsNetwork>();
-		stats.OnHealthReachedZero += Die;
+		if(IsOwner)
+		{
+			stats = GetComponent<CharacterStatsNetwork>();
+			stats.OnHealthReachedZero += DespawnServerRPC;
+		}
 	}
 
-	private void Die()
+	public void Interact(Transform interactTransform)
 	{
-		Destroy(gameObject, 5f);
-	}
-
-	public void Interact(Transform interactorTransform)
-	{
-		Debug.Log("Fight");
+		if(interactTransform.TryGetComponent(out CharacterCombatNetwork combatManager))
+		{
+			combatManager.Attack(stats);
+		}
 	}
 
     public string GetInteractText()
@@ -32,5 +35,13 @@ public class EnemyNetwork : NetworkBehaviour, IInteractable
     public Transform GetTransform()
 	{
 		return transform;
+	}
+
+	[ServerRpc]
+	private void DespawnServerRPC()
+	{
+		Debug.Log("Enemy Died");
+		OnDespawn?.Invoke();
+		Destroy(gameObject);
 	}
 }

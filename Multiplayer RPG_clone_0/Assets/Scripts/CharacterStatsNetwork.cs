@@ -3,20 +3,32 @@ using Unity.Netcode;
 
 public class CharacterStatsNetwork : NetworkBehaviour
 {
-    public Stat maxHealth;
+    [SerializeField] private Stat maxHealth;
     public int currentHealth {get; protected set;}
 
     public Stat damage;
-    public Stat armor;
+    [SerializeField] private Stat armor;
+
+    public bool HasDied
+    {
+        get
+        {
+            return currentHealth <= 0;
+        }
+        set
+        {
+            currentHealth = value ? 0 : maxHealth.GetValue();
+        }
+    }
 
     public event System.Action OnHealthReachedZero;
 
     public virtual void Awake()
     {
-        currentHealth = maxHealth.GetValue();
+        HasDied = false;
     }
 
-    public virtual void Start() {}
+    public virtual void Start(){}
 
     public void TakeDamage(int damage)
     {
@@ -26,12 +38,9 @@ public class CharacterStatsNetwork : NetworkBehaviour
         currentHealth -= damage;
         Debug.Log(transform.name + " takes " + damage + " damage.");
 
-        if(currentHealth <= 0)
+        if(HasDied)
         {
-            if(OnHealthReachedZero != null)
-            {
-                OnHealthReachedZero();
-            }
+            OnHealthReachedZero?.Invoke();
         }
     }
 

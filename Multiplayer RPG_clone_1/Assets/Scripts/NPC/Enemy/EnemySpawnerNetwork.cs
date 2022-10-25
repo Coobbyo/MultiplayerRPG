@@ -16,7 +16,7 @@ public class EnemySpawnerNetwork : NetworkBehaviour
 
 	private void Update()
 	{
-		if(!IsServer) return;
+		if(!IsServer || !IsOwner) return;
 
 		if(numEnemies >= enemyCap) return;
 		if(spawnTimer > 0)
@@ -31,7 +31,7 @@ public class EnemySpawnerNetwork : NetworkBehaviour
 		enemyTransform.GetComponent<NetworkObject>().Spawn(true);
 		numEnemies++;
 
-		spawnTimer += 5f + Random.Range(0.1f, 5f);
+		spawnTimer += 0.1f + Random.Range(0.1f, 0.2f);
 	}
 
 	private void InitializeEnemy(Transform enemyTransfom)
@@ -44,5 +44,12 @@ public class EnemySpawnerNetwork : NetworkBehaviour
 		enemyTransform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
 
 		enemyTransform.localScale *= Random.Range(0.5f, 1f);
+
+		enemyTransform.GetComponent<EnemyNetwork>().OnDespawn += OnEnemyDespawn;
+	}
+
+	private void OnEnemyDespawn()
+	{
+		numEnemies--;
 	}
 }

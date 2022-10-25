@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081c2e33930b4644e908a62bec098381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 0}
   camLookAt: {fileID: 7636143578505519575}
   baseMesh: {fileID: 7024920381010945412}
 --- !u!114 &6362329898410583213
@@ -222,9 +223,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth:
-    baseValue: 0
+    baseValue: 100
   damage:
-    baseValue: 0
+    baseValue: 1
   armor:
     baseValue: 0
 --- !u!114 &6170659109961308321

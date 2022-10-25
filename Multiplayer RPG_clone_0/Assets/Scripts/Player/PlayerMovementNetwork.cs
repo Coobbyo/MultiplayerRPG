@@ -32,21 +32,6 @@ public class PlayerMovementNetwork : NetworkBehaviour
 		
 	}
 
-	/*private void MoveSimple()
-	{
-		Vector3 movement = transform.position;
-
-        Vector3 direction = new Vector3(0, 0, 0);
-
-		if(Input.GetKey(KeyCode.W)) direction.z = +1f;
-		if(Input.GetKey(KeyCode.S)) direction.z = -1f;
-		if(Input.GetKey(KeyCode.A)) direction.x = -1f;
-		if(Input.GetKey(KeyCode.D)) direction.x = +1f;
-
-		movement = direction * moveSpeed * Time.deltaTime;
-		MoveServerRpc(movement);
-	}*/
-
 	private void Move()
 	{
 		float horizontal = Input.GetAxis("Horizontal");
@@ -73,6 +58,11 @@ public class PlayerMovementNetwork : NetworkBehaviour
 		MoveServerRpc(movement);
 	}
 
+	public void Teleport(Vector3 newPosition)
+	{
+		TeleportServerRPC(newPosition);
+	}
+
 	[ServerRpc]
     private void MoveServerRpc(Vector3 movement)
 	{
@@ -83,5 +73,17 @@ public class PlayerMovementNetwork : NetworkBehaviour
 	private void RotateServerRPC(Quaternion rotation)
 	{
 		transform.rotation = rotation;
+	}
+
+	[ServerRpc]
+	private void ScaleServerRPC(float scalar)
+	{
+		transform.localScale *= scalar;
+	}
+
+	[ServerRpc]
+	private void TeleportServerRPC(Vector3 newPosition)
+	{
+		transform.position = newPosition;
 	}
 }
