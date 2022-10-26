@@ -47,8 +47,8 @@ public class EnemyMovementNetwork : NetworkBehaviour
 
 	private void Move()
 	{
-		//if(transform.localPosition.magnitude >= roamingRadius)
-			//DropTarget();
+		if(transform.localPosition.magnitude >= roamingRadius)
+			DropTarget();
 
 		moveDir = targetPosition - transform.position;
 		transform.position += moveDir.normalized * moveSpeed * Time.deltaTime;
@@ -104,6 +104,7 @@ public class EnemyMovementNetwork : NetworkBehaviour
 	{
 		Vector3 newPosition = new Vector3(Random.Range(-1.0f, 1.0f), 0f, Random.Range(-1.0f, 1.0f));
 		newPosition = newPosition * roamingRadius;
+		debugPosition = newPosition;
 		return newPosition;
 	}
 

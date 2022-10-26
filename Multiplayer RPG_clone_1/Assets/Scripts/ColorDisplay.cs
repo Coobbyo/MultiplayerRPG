@@ -5,8 +5,8 @@ using Unity.Netcode;
 
 public class ColorDisplay : NetworkBehaviour, IInteractable
 {
-    [SerializeField] Color displayColor = Color.white;
-    [SerializeField] MeshRenderer displayMesh;
+    [SerializeField] private Color displayColor = Color.white;
+    [SerializeField] private MeshRenderer displayMesh;
 
     public override void OnNetworkSpawn()
     {
