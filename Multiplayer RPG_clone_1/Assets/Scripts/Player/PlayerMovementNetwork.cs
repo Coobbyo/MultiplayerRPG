@@ -51,9 +51,12 @@ public class PlayerMovementNetwork : NetworkBehaviour
 
 		//Factor in gravity
 		if(characterController.isGrounded)
+		{
             movement.y = 0f;
-        else
+		} else
+		{
             movement.y -= gravity * Time.deltaTime;
+		}
 		
 		MoveServerRpc(movement);
 	}
