@@ -1,9 +1,14 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class NetworkMangerUI : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] private string gameplaySceneName = "Gameplay";
+
+    [Header("Buttons")]
     [SerializeField] private Button hostButton;
     [SerializeField] private Button clientButton;
 
@@ -12,18 +17,12 @@ public class NetworkMangerUI : MonoBehaviour
         hostButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartHost();
-            //OnLaunch();
+            NetworkManager.Singleton.SceneManager.LoadScene(gameplaySceneName, LoadSceneMode.Single);
         });
 
         clientButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartClient();
-            //OnLaunch();
         });
-    }
-
-    public void OnLaunch()
-    {
-        NetworkManager.Singleton.SceneManager.LoadScene("test", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 }

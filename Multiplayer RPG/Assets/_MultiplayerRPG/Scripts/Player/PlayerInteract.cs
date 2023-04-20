@@ -11,7 +11,8 @@ public class PlayerInteract : MonoBehaviour
 	private void Awake()
 	{
 		interactUI = FindObjectOfType<PlayerInteractUI>();
-		interactUI.AttachPlayer(this);
+		if(interactUI != null)
+			interactUI.AttachPlayer(this);
 	}
 
 	private void Update()
